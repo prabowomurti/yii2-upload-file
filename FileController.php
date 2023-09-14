@@ -26,11 +26,11 @@ class FileController extends \yii\web\Controller
 
     /**
      * Show file
-     * @param integer $id
+     * @param string $uuid
      */
-    public function actionShow($id)
+    public function actionShow($uuid)
     {
-        $model = $this->findModel($id);
+        $model = $this->findModel($uuid);
         $response = Yii::$app->getResponse();
         return $response->sendFile($model->filename, $model->name, [
                 'mimeType' => $model->type,
@@ -41,12 +41,12 @@ class FileController extends \yii\web\Controller
 
     /**
      * Download file
-     * @param integer $id
+     * @param string $uuid
      * @param mixed $inline
      */
-    public function actionDownload($id, $inline = false)
+    public function actionDownload($uuid, $inline = false)
     {
-        $model = $this->findModel($id);
+        $model = $this->findModel($uuid);
         $response = Yii::$app->getResponse();
         return $response->sendFile($model->filename, $model->name, [
                 'mimeType' => $model->type,
@@ -57,13 +57,13 @@ class FileController extends \yii\web\Controller
 
     /**
      * Get model
-     * @param integer $id
+     * @param string $uuid
      * @return FileModel
      * @throws NotFoundHttpException
      */
-    protected function findModel($id)
+    protected function findModel($uuid)
     {
-        if (($model = FileModel::findOne($id)) !== null) {
+        if (($model = FileModel::findOne(['uuid' => $uuid])) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

@@ -11,6 +11,7 @@ use yii\imagine\Image;
  * This is the model class for table "uploaded_file".
  *
  * @property integer $id
+ * @property string $uuid
  * @property string $name
  * @property string $filename
  * @property integer $size
@@ -68,6 +69,10 @@ class FileModel extends \yii\db\ActiveRecord
             [['name', 'size'], 'default', 'value' => function($obj, $attribute) {
                     return $obj->file->$attribute;
                 }],
+            [['uuid'], 'unique'],
+            [['uuid'], 'default', 'value' => function (){
+                return self::generateUuid();
+            }],
             [['type'], 'default', 'value' => function() {
                     return FileHelper::getMimeType($this->file->tempName);
                 }],
@@ -99,6 +104,7 @@ class FileModel extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'uuid' => 'UUID',
             'name' => 'Basename',
             'filename' => 'Filename',
             'size' => 'Filesize',
@@ -140,6 +146,21 @@ class FileModel extends \yii\db\ActiveRecord
         $image->save($this->filename);
         $this->size = filesize($this->filename);
         return true;
+    }
+
+    /**
+     * Generate UUID version 4
+     *
+     * @todo use a better approach for performance
+     * @return string generated UUID
+     */
+    protected static function generateUuid() {
+        $data = random_bytes(16);
+    
+        $data[6] = chr(ord($data[6]) & 0x0f | 0x40);
+        $data[8] = chr(ord($data[8]) & 0x3f | 0x80);
+    
+        return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
     }
 
     /**
