@@ -22,6 +22,7 @@ class m141018_105939_create_table_upload extends Migration
 
         $this->createTable('{{%uploaded_file}}', [
             'id' => $this->primaryKey(),
+            'uuid' => $this->string()->unique(),
             'name' => $this->string(),
             'filename' => $this->string(),
             'size' => $this->integer(),
