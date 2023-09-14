@@ -1,5 +1,5 @@
 {
-    "name": "mdmsoft/yii2-upload-file",
+    "name": "prabowomurti/yii2-upload-file",
     "description": "Yii2 upload file tools",
     "keywords": ["yii", "upload", "file"],
     "type": "yii2-extension",
