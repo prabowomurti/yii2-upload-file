@@ -13,7 +13,10 @@ class Bootstrap implements \yii\base\BootstrapInterface
 
     public function bootstrap($app)
     {
-        if ($app instanceof \yii\web\Application) {
+        if (
+            $app instanceof \yii\web\Application &&
+            !isset($app->controllerMap['file'])
+        ) {
             $app->controllerMap['file'] = __NAMESPACE__ . '\FileController';
         }
     }
